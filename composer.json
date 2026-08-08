@@ -1,0 +1,19 @@
+{
+    "name": "switch/router",
+    "description": "Switch Framework HTTP Router Package",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": ">=8.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Switch\\Router\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Switch\\Router\\Tests\\": "tests/"
+        }
+    }
+}
