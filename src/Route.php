@@ -13,6 +13,7 @@ class Route
     private string $path;
     private mixed $handler;
     private ?string $name = null;
+    private string $namePrefix = '';
 
     /**
      * @var array<int, mixed>
@@ -58,13 +59,24 @@ class Route
         return $this;
     }
 
+    public function setNamePrefix(string $prefix): self
+    {
+        $this->namePrefix = $prefix;
+        return $this;
+    }
+
     public function getName(): ?string
     {
-        return $this->name;
+        if ($this->name === null) {
+            return null;
+        }
+
+        return $this->namePrefix . $this->name;
     }
 
     public function middleware(mixed ...$middleware): self
     {
+        $middleware = is_array($middleware[0] ?? null) ? $middleware[0] : $middleware;
         $this->middleware = array_merge($this->middleware, $middleware);
         return $this;
     }
@@ -88,6 +100,26 @@ class Route
         }
 
         return $this;
+    }
+
+    public function whereNumber(string $param): self
+    {
+        return $this->where($param, '[0-9]+');
+    }
+
+    public function whereAlpha(string $param): self
+    {
+        return $this->where($param, '[a-zA-Z]+');
+    }
+
+    public function whereAlphaNumeric(string $param): self
+    {
+        return $this->where($param, '[a-zA-Z0-9]+');
+    }
+
+    public function whereUuid(string $param): self
+    {
+        return $this->where($param, '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}');
     }
 
     /**
